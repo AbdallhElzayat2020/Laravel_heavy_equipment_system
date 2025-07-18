@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Catalog;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,22 +26,29 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $setting    = $this->firstOrCreateSetting();
-        $categories = Category::all();
-        $catalog    = Catalog::first();
-        $products_count = Product::all()->count();
+        // التحقق من وجود الجداول قبل محاولة الوصول إليها
+        if (!Schema::hasTable('settings')) {
+            return;
+        }
 
-
+        $setting = $this->firstOrCreateSetting();
+        
+        // التحقق من وجود باقي الجداول
+        $categories = Schema::hasTable('categories') ? Category::all() : collect();
+        $catalog = Schema::hasTable('catalogs') ? Catalog::first() : null;
+        $products_count = Schema::hasTable('products') ? Product::all()->count() : 0;
 
         view()->share([
             'setting' => $setting,
             'categories' => $categories,
-            'catalog'   => $catalog,
-            'products_count'=>$products_count,
+            'catalog' => $catalog,
+            'products_count' => $products_count,
         ]);
 
-
         view()->composer('dashboard.*', function ($view) use ($categories) {
+            if (!Schema::hasTable('categories') || !Schema::hasTable('products') || !Schema::hasTable('contacts')) {
+                return;
+            }
 
             $categories_count = $categories->count();
             $products_count = Product::all()->count();
@@ -48,7 +56,6 @@ class AppServiceProvider extends ServiceProvider
 
             // unread contacts
             $unread_contacts = Contact::where('is_read', 0)->get();
-
 
             view()->share([
                 'products_count' => $products_count,
