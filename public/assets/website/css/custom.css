@@ -1,0 +1,98 @@
+.slider-container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.slider {
+    display: flex;
+    width: 300%;
+    height: 100%;
+    animation: slide 9s infinite;
+}
+
+.slide {
+    width: 100vw;
+    height: 100vh;
+    flex: 1;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* CSS Animation */
+@keyframes slide {
+
+    0%,
+    33% {
+        transform: translateX(0);
+    }
+
+    34%,
+    66% {
+        transform: translateX(-100vw);
+    }
+
+    67%,
+    100% {
+        transform: translateX(-200vw);
+    }
+}
+.property__gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 0 1rem;
+}
+
+.transition-scale:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+
+.card-content .btn {
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.card-content:hover .btn {
+    opacity: 1;
+}
+
+.card-content {
+    overflow: hidden;
+}
+
+.card-content img {
+    max-height: 10rem !important;
+}
+
+.card-content:hover img {
+    transform: scale(1.05);
+}
+
+.card-content:hover::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.modal-header button {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
