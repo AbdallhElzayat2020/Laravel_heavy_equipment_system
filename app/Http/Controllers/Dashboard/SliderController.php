@@ -14,6 +14,7 @@ class SliderController extends Controller
     public function __construct(ImageManger $imageManager)
     {
         $this->imageManager = $imageManager;
+
     }
     public function index()
     {

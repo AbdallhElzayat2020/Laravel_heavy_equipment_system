@@ -34,7 +34,7 @@ class LoginController extends Controller implements HasMiddleware
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @return Middleware[]
      */
 
     public static function middleware()
